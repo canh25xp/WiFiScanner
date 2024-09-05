@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "WifiScanner"
+rootProject.name = "WiFiScanner"
 include(":app")
  
