@@ -133,9 +133,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setupAdapter() {
-        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mBinding.recyclerView.setAdapter(mAdapter);
-        mBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        mBinding.rcAvailableNetworks.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.rcAvailableNetworks.setAdapter(mAdapter);
+        mBinding.rcAvailableNetworks.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void setupViewModel() {
