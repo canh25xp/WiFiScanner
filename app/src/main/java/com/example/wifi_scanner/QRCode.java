@@ -22,7 +22,7 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
-public class ScannedBarcodeActivity extends AppCompatActivity {
+public class QRCode extends AppCompatActivity {
     private static final String TAG = "MY_WIFI_SCANNER";
     SurfaceView surfaceView;
     private BarcodeDetector barcodeDetector;
@@ -63,10 +63,10 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 try {
-                    if (ActivityCompat.checkSelfPermission(ScannedBarcodeActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(QRCode.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                         cameraSource.start(surfaceView.getHolder());
                     } else {
-                        ActivityCompat.requestPermissions(ScannedBarcodeActivity.this, new
+                        ActivityCompat.requestPermissions(QRCode.this, new
                                 String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
 
                     }
