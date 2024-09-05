@@ -28,7 +28,7 @@ public class PasswordActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-        setContentView(R.layout.activity_pass_wifi);
+        setContentView(R.layout.activity_password);
         password = findViewById(R.id.input_password);
         button = findViewById(R.id.connect_button);
         button.setOnClickListener(this);

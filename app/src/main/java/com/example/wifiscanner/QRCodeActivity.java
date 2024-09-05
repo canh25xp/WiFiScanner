@@ -37,7 +37,7 @@ public class QRCodeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scanned_barcode);
+        setContentView(R.layout.activity_qr_code);
         initViews();
         initialiseDetectorsAndSources();
     }

@@ -28,13 +28,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.wifiscanner.databinding.LayoutMainBinding;
+import com.example.wifiscanner.databinding.ActivityMainBinding;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "MY_WIFI_SCANNER";
-    private LayoutMainBinding mBinding;
+    private ActivityMainBinding mBinding;
     private WifiReceiver mReceiver;
     private WifiManager mWifiManager;
     private final RecyclerAdapter mAdapter = new RecyclerAdapter(this);
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.layout_main);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         mReceiver = new WifiReceiver(mWifiManager);
         mBinding.swWifi.setOnClickListener(this);
