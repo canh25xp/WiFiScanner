@@ -99,6 +99,33 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    void setMode(boolean checkOnWifi) {
+        mBinding.infoWifi.setVisibility(checkOnWifi ? View.VISIBLE : View.GONE);
+        mBinding.viewWifioff.setVisibility(checkOnWifi ? View.GONE : View.VISIBLE);
+        mBinding.viewQrCode.setVisibility(checkOnWifi ? View.VISIBLE : View.GONE);
+        mBinding.swOnOff.setText(checkOnWifi ? "ON" : "OFF");
+        mBinding.swOnOff.setChecked(checkOnWifi);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        setupConnectedView();
+        if (checkOnWifi) mWifiManager.startScan();
+    }
+
+    private void initFilterAction() {
+        filterRefreshUpdate = new IntentFilter();
+        filterRefreshUpdate.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+        filterRefreshUpdate.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        filterRefreshUpdate.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+    }
+
+    private void setupAdapter() {
+        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.recyclerView.setAdapter(mAdapter);
+        mBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+
     private void setupViewModel() {
         WifiViewModel viewModel = new ViewModelProvider(this).get(WifiViewModel.class);
         viewModel.getData().observe(this, scanResults -> {
@@ -132,33 +159,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             mBinding.currentnetwork.setVisibility(View.GONE);
             Log.d(TAG, "setupViewModel: ");
         }
-    }
-
-    void setMode(boolean checkOnWifi) {
-        mBinding.infoWifi.setVisibility(checkOnWifi ? View.VISIBLE : View.GONE);
-        mBinding.viewWifioff.setVisibility(checkOnWifi ? View.GONE : View.VISIBLE);
-        mBinding.viewQrCode.setVisibility(checkOnWifi ? View.VISIBLE : View.GONE);
-        mBinding.swOnOff.setText(checkOnWifi ? "ON" : "OFF");
-        mBinding.swOnOff.setChecked(checkOnWifi);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        setupConnectedView();
-        if (checkOnWifi) mWifiManager.startScan();
-    }
-
-    private void initFilterAction() {
-        filterRefreshUpdate = new IntentFilter();
-        filterRefreshUpdate.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-        filterRefreshUpdate.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-        filterRefreshUpdate.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-    }
-
-    private void setupAdapter() {
-        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mBinding.recyclerView.setAdapter(mAdapter);
-        mBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     public void setupConnectedView() {
