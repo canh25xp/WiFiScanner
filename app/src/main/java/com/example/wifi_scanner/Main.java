@@ -118,10 +118,11 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         mBinding.swOnOff.setText(checkOnWifi ? "ON" : "OFF");
         mBinding.swOnOff.setChecked(checkOnWifi);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             return;
-        }
+
         setupConnectedView();
+
         if (checkOnWifi) mWifiManager.startScan();
     }
 
