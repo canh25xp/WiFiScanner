@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         mReceiver = new WifiReceiver(mWifiManager);
         mBinding.swWifi.setOnClickListener(this);
-        mBinding.wifiQrCode.setOnClickListener(this);
+        mBinding.btnQrCode.setOnClickListener(this);
         initFilterAction();
         registerReceiver(mReceiver, filterRefreshUpdate);
         Repository.instance().addDataSource(mReceiver.getData(), mReceiver.getWifistatus(), mReceiver.getWifiConnected());
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mWifiManager.setWifiEnabled(true);
                 Toast.makeText(this, "WiFi On", Toast.LENGTH_SHORT).show();
             }
-        } else if (id == R.id.wifi_qr_code) {
+        } else if (id == R.id.btn_qr_code) {
             Toast.makeText(this, "TODO: Implement this", Toast.LENGTH_SHORT).show();
         }
     }
