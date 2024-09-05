@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     void setMode(boolean checkOnWifi) {
         mBinding.infoWifi.setVisibility(checkOnWifi ? View.VISIBLE : View.GONE);
-        mBinding.viewWifioff.setVisibility(checkOnWifi ? View.GONE : View.VISIBLE);
+        mBinding.tvWifiOff.setVisibility(checkOnWifi ? View.GONE : View.VISIBLE);
         mBinding.viewQrCode.setVisibility(checkOnWifi ? View.VISIBLE : View.GONE);
         mBinding.swOnOff.setText(checkOnWifi ? "ON" : "OFF");
         mBinding.swOnOff.setChecked(checkOnWifi);
@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         viewModel.getStatus().observe(this, aBoolean -> {
             Log.d(TAG, "onChanged viewModel.getStatus() " + aBoolean);
-            mBinding.viewWifioff.setVisibility(aBoolean ? View.GONE : View.VISIBLE);
+            mBinding.tvWifiOff.setVisibility(aBoolean ? View.GONE : View.VISIBLE);
             setMode(aBoolean);
         });
         viewModel.getConnectedAP().observe(this, wifiInfo -> {

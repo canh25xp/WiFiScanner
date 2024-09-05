@@ -3,7 +3,7 @@
     <string name="on">On</string>
     <string name="off">Off</string>
     <string name="current_network">Current Network</string>
-    <string name="wifi_off_message">To see available networks, turn on Wi-Fi</string>
+    <string name="wifi_off_message">To see available networks, turn on WiFi</string>
     <string name="default_wifi_name">WiFi name</string>
     <string name="wifi_no_signal">no signal</string>
 </resources>
