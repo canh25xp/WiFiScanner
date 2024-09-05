@@ -10,14 +10,14 @@ import java.util.List;
 
 public class WifiViewModel extends ViewModel {
     public LiveData<List<ScanResult>> getData() {
-        return Reposity.instance().getData();
+        return Repository.instance().getData();
     }
 
     public LiveData<Boolean> getStatus() {
-        return Reposity.instance().getWifiStatus();
+        return Repository.instance().getWifiStatus();
     }
 
     public LiveData<WifiInfo> getConnectedAP() {
-        return Reposity.instance().getWifiAP();
+        return Repository.instance().getWifiAP();
     }
 }

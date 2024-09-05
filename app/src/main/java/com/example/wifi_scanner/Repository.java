@@ -8,16 +8,16 @@ import androidx.lifecycle.MediatorLiveData;
 
 import java.util.List;
 
-public class Reposity {
-    private static final Reposity INSTANCE = new Reposity();
+public class Repository {
+    private static final Repository INSTANCE = new Repository();
     private final MediatorLiveData<List<ScanResult>> mData = new MediatorLiveData<>();
     private final MediatorLiveData<Boolean> mmIsON = new MediatorLiveData<>();
     private final MediatorLiveData<WifiInfo> mWifi = new MediatorLiveData<>();
 
-    private Reposity() {
+    private Repository() {
     }
 
-    public static Reposity instance() {
+    public static Repository instance() {
         return INSTANCE;
     }
 

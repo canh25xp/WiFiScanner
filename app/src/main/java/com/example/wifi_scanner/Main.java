@@ -53,7 +53,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         mBinding.wifiQrCode.setOnClickListener(this);
         initFilterAction();
         registerReceiver(mReceiver, filterRefreshUpdate);
-        Reposity.instance().addDataSource(mReceiver.getData(), mReceiver.getWifistatus(), mReceiver.getWifiConnected());
+        Repository.instance().addDataSource(mReceiver.getData(), mReceiver.getWifistatus(), mReceiver.getWifiConnected());
         setMode(mWifiState);
         setupViewModel();
         setupAdapter();
@@ -88,7 +88,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         unregisterReceiver(mReceiver);
-        Reposity.instance().removeDataSource(mReceiver.getData(), mReceiver.getWifistatus(), mReceiver.getWifiConnected());
+        Repository.instance().removeDataSource(mReceiver.getData(), mReceiver.getWifistatus(), mReceiver.getWifiConnected());
         super.onDestroy();
     }
 
