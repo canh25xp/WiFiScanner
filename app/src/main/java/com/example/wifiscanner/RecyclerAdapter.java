@@ -62,10 +62,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.itemView.setOnClickListener(v -> {
             if (capabilities.contains("WPA") || capabilities.contains("WEP")) {
                 Log.d(TAG, "onClick: item");
-                Intent intent = new Intent(mContext, PassWifi.class);
+                Intent intent = new Intent(mContext, PasswordActivity.class);
                 intent.putExtra("NAME WIFI", name);
                 mContext.startActivity(intent);
-            } else PassWifi.connectToNetWork(name, "", mContext);
+            } else PasswordActivity.connectToNetWork(name, "", mContext);
         });
     }
 

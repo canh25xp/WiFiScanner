@@ -21,10 +21,10 @@
         android:theme="@style/Theme.MyWiFi_app"
         tools:targetApi="31">
         <activity
-            android:name=".QRCode"
+            android:name=".QRCodeActivity"
             android:exported="false" />
         <activity
-            android:name=".PassWifi"
+            android:name=".PasswordActivity"
             android:exported="false" />
 
         <provider
@@ -38,7 +38,7 @@
         </provider>
 
         <activity
-            android:name=".Main"
+            android:name=".MainActivity"
             android:exported="true"
             tools:ignore="ExtraText">
             <intent-filter>

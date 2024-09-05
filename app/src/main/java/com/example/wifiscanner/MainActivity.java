@@ -32,7 +32,7 @@ import com.example.wifiscanner.databinding.LayoutMainBinding;
 
 import java.util.List;
 
-public class Main extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "MY_WIFI_SCANNER";
     private LayoutMainBinding mBinding;
     private WifiReceiver mReceiver;

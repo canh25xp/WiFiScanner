@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-public class PassWifi extends AppCompatActivity implements View.OnClickListener {
+public class PasswordActivity extends AppCompatActivity implements View.OnClickListener {
     private Context context;
     Button button;
     EditText password;
