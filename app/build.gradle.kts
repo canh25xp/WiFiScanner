@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.wifi_scanner"
+    namespace = "com.example.wifiscanner"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.wifi_scanner"
+        applicationId = "com.example.wifiscanner"
         minSdk = 28
         //noinspection ExpiredTargetSdkVersion
         targetSdk = 28

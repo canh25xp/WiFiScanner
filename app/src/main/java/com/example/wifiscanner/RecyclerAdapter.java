@@ -1,4 +1,4 @@
-package com.example.wifi_scanner;
+package com.example.wifiscanner;
 
 import android.content.Context;
 import android.content.Intent;

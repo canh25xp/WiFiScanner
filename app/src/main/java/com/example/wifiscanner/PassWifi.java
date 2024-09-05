@@ -1,4 +1,4 @@
-package com.example.wifi_scanner;
+package com.example.wifiscanner;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

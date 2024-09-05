@@ -1,4 +1,4 @@
-package com.example.wifi_scanner;
+package com.example.wifiscanner;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -28,7 +28,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.wifi_scanner.databinding.LayoutMainBinding;
+import com.example.wifiscanner.databinding.LayoutMainBinding;
 
 import java.util.List;
 

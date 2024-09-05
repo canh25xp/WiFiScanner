@@ -1,4 +1,4 @@
-package com.example.wifi_scanner;
+package com.example.wifiscanner;
 
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
