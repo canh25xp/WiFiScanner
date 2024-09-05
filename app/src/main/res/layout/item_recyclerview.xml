@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,7 +59,7 @@
                     android:gravity="bottom"
                     android:paddingHorizontal="16dp"
                     android:singleLine="true"
-                    android:text="Wi-Fi name"
+                    android:text="@string/default_wifi_name"
                     android:textColor="#000"
                     android:textSize="16sp" />
 
@@ -72,12 +70,14 @@
                     android:gravity="top"
                     android:maxLines="1"
                     android:paddingHorizontal="16dp"
-                    android:text="no signal"
+                    android:text="@string/wifi_no_signal"
                     android:textColor="#9098A0"
                     android:textSize="12sp" />
+
             </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
+
 </layout>

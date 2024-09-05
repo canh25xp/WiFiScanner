@@ -72,8 +72,8 @@
                     android:textSize="18sp"
                     tools:ignore="HardcodedText,RtlSymmetry,UseSwitchCompatOrMaterialXml" />
 
-
             </LinearLayout>
+
         </androidx.cardview.widget.CardView>
 
         <Button
@@ -84,4 +84,5 @@
             android:text="CONNECT" />
 
     </LinearLayout>
+
 </layout>
