@@ -16,6 +16,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,7 +38,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     private WifiManager mWifiManager;
     private final RecyclerAdapter mAdapter = new RecyclerAdapter(this);
     private IntentFilter filterRefreshUpdate;
-    private boolean mMode = false;
+    private boolean mWifiState = false;
     private int iconWifi;
     private String titleWifi;
 
@@ -52,11 +53,11 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         initFilterAction();
         registerReceiver(mReceiver, filterRefreshUpdate);
         Reposity.instance().addDataSource(mReceiver.getData(), mReceiver.getWifistatus(), mReceiver.getWifiConnected());
-        setMode(mMode);
+        setMode(mWifiState);
         setupViewModel();
         setupAdapter();
         Log.d("giang", "wifiStatus: " + mWifiManager.isWifiEnabled());
-        mMode = mWifiManager.isWifiEnabled();
+        mWifiState = mWifiManager.isWifiEnabled();
         if (getSupportActionBar() != null) this.getSupportActionBar().hide();
     }
 
@@ -80,6 +81,25 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         unregisterReceiver(mReceiver);
         Reposity.instance().removeDataSource(mReceiver.getData(), mReceiver.getWifistatus(), mReceiver.getWifiConnected());
         super.onDestroy();
+    }
+
+    public void onClick(View view) {
+        int id = view.getId();
+        if (id == R.id.swOnOff) {
+            setupConnectedView();
+            mWifiState = mWifiManager.isWifiEnabled();
+            mBinding.swOnOff.setChecked(mWifiState);
+            if (mBinding.swOnOff.isChecked()) {
+                mWifiManager.setWifiEnabled(false);
+                Toast.makeText(this, "WiFi Off", Toast.LENGTH_SHORT).show();
+                setMode(mWifiState);
+            } else {
+                mWifiManager.setWifiEnabled(true);
+                Toast.makeText(this, "WiFi On", Toast.LENGTH_SHORT).show();
+            }
+        } else if (id == R.id.wifi_qr_code) {
+            Toast.makeText(this, "TODO: Implement this", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setupViewModel() {
@@ -149,20 +169,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         mBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
-
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.swOnOff) {
-            setEnableWifi();
-            setupConnectedView();
-            mMode = mWifiManager.isWifiEnabled();
-            if (mBinding.swOnOff.isChecked()) {
-                setMode(mMode);
-            }
-        } else if (id == R.id.wifi_qr_code) {
-            startActivityForResult(new Intent(this, ScannedBarcodeActivity.class), QR_CONNECT_REQUEST);
-        }
-    }
 
     void setEnableWifi() {
         Intent settingsIntent = new Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY);
