@@ -65,7 +65,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_main), (v, windowInsets) -> {
             Insets systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return WindowInsetsCompat.CONSUMED; // Return CONSUMED if you don't want the window insets to keep passing down to descendant views.
+            return WindowInsetsCompat.CONSUMED;
         });
         if (getSupportActionBar() != null) this.getSupportActionBar().hide();
     }
@@ -118,8 +118,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         mBinding.swOnOff.setText(checkOnWifi ? "ON" : "OFF");
         mBinding.swOnOff.setChecked(checkOnWifi);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            return;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) return;
 
         setupConnectedView();
 
