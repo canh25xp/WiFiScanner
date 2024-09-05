@@ -111,7 +111,7 @@
                     android:orientation="vertical">
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/currentnetwork"
+                        android:id="@+id/cv_current_network"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:cardBackgroundColor="#f6f6f6"
@@ -124,7 +124,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/textView2"
+                                android:id="@+id/tv_current_network"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="32dp"
@@ -134,7 +134,7 @@
                                 tools:ignore="HardcodedText" />
 
                             <androidx.cardview.widget.CardView
-                                android:id="@+id/connected_cardview"
+                                android:id="@+id/cv_connected"
                                 android:layout_width="match_parent"
                                 android:layout_height="80dp"
                                 android:layout_gravity="center"

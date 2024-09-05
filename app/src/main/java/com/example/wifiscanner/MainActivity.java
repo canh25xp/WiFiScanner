@@ -162,13 +162,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(TAG, "onChanged viewModel.wifiInfo " + wifiInfo.getSSID());
             int level = wifiInfo.getRssi();
             String ssid = wifiInfo.getSSID();
-            mBinding.currentnetwork.setVisibility(View.VISIBLE);
+            mBinding.cvCurrentNetwork.setVisibility(View.VISIBLE);
             mBinding.connectedlayout.tvConnectedName.setText(ssid.substring(1, ssid.length() - 1));
             viewLevel(level);
             mBinding.connectedlayout.tvConnectedStatus.setText(titleWifi);
             mBinding.connectedlayout.wifiIcon.setImageResource(iconWifi);
         } else {
-            mBinding.currentnetwork.setVisibility(View.GONE);
+            mBinding.cvCurrentNetwork.setVisibility(View.GONE);
             Log.d(TAG, "setupViewModel: ");
         }
     }
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ssid = ssid.substring(1, ssid.length() - 1);
                 mBinding.connectedlayout.tvConnectedName.setText(ssid);
                 viewLevel(level);
-                mBinding.connectedCardview.setVisibility(View.VISIBLE);
+                mBinding.cvConnected.setVisibility(View.VISIBLE);
                 mBinding.connectedlayout.tvConnectedStatus.setText(titleWifi);
                 mBinding.connectedlayout.wifiIcon.setImageResource(iconWifi);
                 if (wifi6 == 6) mBinding.connectedlayout.wifi6.setVisibility(View.VISIBLE);
@@ -207,10 +207,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
             } else {
-                mBinding.connectedCardview.setVisibility(View.GONE);
+                mBinding.cvConnected.setVisibility(View.GONE);
             }
         } else {
-            mBinding.currentnetwork.setVisibility(View.GONE);
+            mBinding.cvCurrentNetwork.setVisibility(View.GONE);
         }
     }
 
