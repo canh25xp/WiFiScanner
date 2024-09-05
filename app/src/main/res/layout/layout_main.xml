@@ -145,7 +145,7 @@
                                 tools:cardElevation="0dp">
 
                                 <include
-                                    android:id="@+id/connectedlayout"
+                                    android:id="@+id/layout_connected"
                                     layout="@layout/item_connected"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"

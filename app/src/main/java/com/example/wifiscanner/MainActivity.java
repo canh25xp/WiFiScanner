@@ -163,10 +163,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             int level = wifiInfo.getRssi();
             String ssid = wifiInfo.getSSID();
             mBinding.cvCurrentNetwork.setVisibility(View.VISIBLE);
-            mBinding.connectedlayout.tvConnectedName.setText(ssid.substring(1, ssid.length() - 1));
+            mBinding.layoutConnected.tvConnectedName.setText(ssid.substring(1, ssid.length() - 1));
             viewLevel(level);
-            mBinding.connectedlayout.tvConnectedStatus.setText(titleWifi);
-            mBinding.connectedlayout.wifiIcon.setImageResource(iconWifi);
+            mBinding.layoutConnected.tvConnectedStatus.setText(titleWifi);
+            mBinding.layoutConnected.wifiIcon.setImageResource(iconWifi);
         } else {
             mBinding.cvCurrentNetwork.setVisibility(View.GONE);
             Log.d(TAG, "setupViewModel: ");
@@ -185,13 +185,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int level = connectionInfo.getRssi();
                 @SuppressLint({"NewApi", "LocalSuppress"}) int wifi6 = connectionInfo.getWifiStandard();
                 ssid = ssid.substring(1, ssid.length() - 1);
-                mBinding.connectedlayout.tvConnectedName.setText(ssid);
+                mBinding.layoutConnected.tvConnectedName.setText(ssid);
                 viewLevel(level);
                 mBinding.cvConnected.setVisibility(View.VISIBLE);
-                mBinding.connectedlayout.tvConnectedStatus.setText(titleWifi);
-                mBinding.connectedlayout.wifiIcon.setImageResource(iconWifi);
-                if (wifi6 == 6) mBinding.connectedlayout.wifi6.setVisibility(View.VISIBLE);
-                else mBinding.connectedlayout.wifi6.setVisibility(View.GONE);
+                mBinding.layoutConnected.tvConnectedStatus.setText(titleWifi);
+                mBinding.layoutConnected.wifiIcon.setImageResource(iconWifi);
+                if (wifi6 == 6) mBinding.layoutConnected.wifi6.setVisibility(View.VISIBLE);
+                else mBinding.layoutConnected.wifi6.setVisibility(View.GONE);
                 @SuppressLint("MissingPermission")
                 List<ScanResult> networkList = mWifiManager.getScanResults();
                 if (networkList != null) {
@@ -200,9 +200,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             String capabilities = network.capabilities;
 
                             if (capabilities.contains("WPA") || capabilities.contains("WEP"))
-                                mBinding.connectedlayout.iconlockconnected.setVisibility(View.VISIBLE);
+                                mBinding.layoutConnected.iconlockconnected.setVisibility(View.VISIBLE);
                             else
-                                mBinding.connectedlayout.iconlockconnected.setVisibility(View.GONE);
+                                mBinding.layoutConnected.iconlockconnected.setVisibility(View.GONE);
                         }
                     }
                 }
