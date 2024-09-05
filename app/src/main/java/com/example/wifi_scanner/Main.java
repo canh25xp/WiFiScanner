@@ -16,6 +16,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.core.graphics.Insets;
+import androidx.activity.EdgeToEdge;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -55,6 +59,14 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         setupAdapter();
         mWifiState = mWifiManager.isWifiEnabled();
         Log.d(TAG, "mWifiState: " + mWifiState);
+
+        EdgeToEdge.enable(this);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_main), (v, windowInsets) -> {
+            Insets systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return WindowInsetsCompat.CONSUMED; // Return CONSUMED if you don't want the window insets to keep passing down to descendant views.
+        });
         if (getSupportActionBar() != null) this.getSupportActionBar().hide();
     }
 
