@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     void setMode(boolean checkOnWifi) {
         mBinding.infoWifi.setVisibility(checkOnWifi ? View.VISIBLE : View.GONE);
         mBinding.tvWifiOff.setVisibility(checkOnWifi ? View.GONE : View.VISIBLE);
-        mBinding.viewQrCode.setVisibility(checkOnWifi ? View.VISIBLE : View.GONE);
+        mBinding.cvQrCode.setVisibility(checkOnWifi ? View.VISIBLE : View.GONE);
         mBinding.swWifi.setText(checkOnWifi ? "ON" : "OFF");
         mBinding.swWifi.setChecked(checkOnWifi);
 
