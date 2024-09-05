@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    namespace 'com.example.mywi_fi_app'
+    namespace 'com.example.wifi_scanner'
     //noinspection GradleDependency
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.mywi_fi_app"
+        applicationId "com.example.wifi_scanner"
         minSdk 28
         //noinspection ExpiredTargetSdkVersion
         targetSdk 28

@@ -1,4 +1,4 @@
-package com.example.mywi_fi_app;
+package com.example.wifi_scanner;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
