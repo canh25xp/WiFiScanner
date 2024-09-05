@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBinding = DataBindingUtil.setContentView(this, R.layout.layout_main);
         mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         mReceiver = new WifiReceiver(mWifiManager);
-        mBinding.swOnOff.setOnClickListener(this);
+        mBinding.swWifi.setOnClickListener(this);
         mBinding.wifiQrCode.setOnClickListener(this);
         initFilterAction();
         registerReceiver(mReceiver, filterRefreshUpdate);
@@ -94,11 +94,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onClick(View view) {
         int id = view.getId();
-        if (id == R.id.swOnOff) {
+        if (id == R.id.sw_wifi) {
             setupConnectedView();
             mWifiState = mWifiManager.isWifiEnabled();
-            mBinding.swOnOff.setChecked(mWifiState);
-            if (mBinding.swOnOff.isChecked()) {
+            mBinding.swWifi.setChecked(mWifiState);
+            if (mBinding.swWifi.isChecked()) {
                 mWifiManager.setWifiEnabled(false);
                 Toast.makeText(this, "WiFi Off", Toast.LENGTH_SHORT).show();
                 setMode(mWifiState);
@@ -115,8 +115,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBinding.infoWifi.setVisibility(checkOnWifi ? View.VISIBLE : View.GONE);
         mBinding.tvWifiOff.setVisibility(checkOnWifi ? View.GONE : View.VISIBLE);
         mBinding.viewQrCode.setVisibility(checkOnWifi ? View.VISIBLE : View.GONE);
-        mBinding.swOnOff.setText(checkOnWifi ? "ON" : "OFF");
-        mBinding.swOnOff.setChecked(checkOnWifi);
+        mBinding.swWifi.setText(checkOnWifi ? "ON" : "OFF");
+        mBinding.swWifi.setChecked(checkOnWifi);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) return;
 
