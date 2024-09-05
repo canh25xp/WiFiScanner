@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WifiReceiver extends BroadcastReceiver {
+    private static final String TAG = "MY_WIFI_SCANNER";
     WifiManager wifiManager;
     private List<ScanResult> mScanResults = new ArrayList<>();
     String currentWifiConnected;
@@ -48,10 +49,10 @@ public class WifiReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        Log.d("giang5", "onReceive: " + action);
+        Log.d(TAG, "onReceive: " + action);
 
         if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(action)) {
-            Log.d("giang", "onReceive: SCAN_RESULTS_AVAILABLE_ACTION" + mScanResults.size());
+            Log.d(TAG, "onReceive: SCAN_RESULTS_AVAILABLE_ACTION" + mScanResults.size());
             ScanResultWifiChange(wifiManager.getScanResults());
         } else if (WifiManager.NETWORK_STATE_CHANGED_ACTION.equals(action)) {
             currentWifiConnected = getCurrentSsid(context);
@@ -61,7 +62,7 @@ public class WifiReceiver extends BroadcastReceiver {
                 connectedAP.setValue(null);
             ScanResultWifiChange(wifiManager.getScanResults());
         } else if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {
-            Log.d("giang", "onReceive: WIFI_STATE_CHANGED_ACTION" + wifiManager.isWifiEnabled());
+            Log.d(TAG, "onReceive: WIFI_STATE_CHANGED_ACTION" + wifiManager.isWifiEnabled());
             if (wifiManager.isWifiEnabled()) {
                 isWifiOn.setValue(true);
             } else {
@@ -95,7 +96,7 @@ public class WifiReceiver extends BroadcastReceiver {
                 continue;
             }
 
-            Log.d("giang2", "SSID " + name);
+            Log.d(TAG, "SSID " + name);
             if (!name.equals("") && scanResult.level >= -100) {
                 mScanResults.add(scanResult);
             }

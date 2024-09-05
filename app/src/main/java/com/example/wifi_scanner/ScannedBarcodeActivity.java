@@ -23,8 +23,7 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import java.io.IOException;
 
 public class ScannedBarcodeActivity extends AppCompatActivity {
-
-
+    private static final String TAG = "MY_WIFI_SCANNER";
     SurfaceView surfaceView;
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
@@ -116,7 +115,7 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        Log.d("giang14", "onPause: ");
+        Log.d(TAG, "onPause: ");
         super.onPause();
         cameraSource.release();
     }

@@ -12,7 +12,6 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +31,7 @@ import com.example.wifi_scanner.databinding.LayoutMainBinding;
 import java.util.List;
 
 public class Main extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = "MY_WIFI_SCANNER";
     private static final int QR_CONNECT_REQUEST = 102;
     private LayoutMainBinding mBinding;
     private WifiReceiver mReceiver;
@@ -56,8 +56,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         setMode(mWifiState);
         setupViewModel();
         setupAdapter();
-        Log.d("giang", "wifiStatus: " + mWifiManager.isWifiEnabled());
         mWifiState = mWifiManager.isWifiEnabled();
+        Log.d(TAG, "mWifiState: " + mWifiState);
         if (getSupportActionBar() != null) this.getSupportActionBar().hide();
     }
 
@@ -106,24 +106,24 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         WifiViewModel viewModel = new ViewModelProvider(this).get(WifiViewModel.class);
         viewModel.getData().observe(this, scanResults -> {
             if (mWifiManager.isWifiEnabled() && scanResults != null && !scanResults.isEmpty()) {
-                Log.d("giang2", "onChanged: " + scanResults.size());
+                Log.d(TAG, "onChanged: " + scanResults.size());
                 mAdapter.updateData(scanResults);
             }
         });
         viewModel.getStatus().observe(this, aBoolean -> {
-            Log.d("giang2", "onChanged viewModel.getStatus() " + aBoolean);
+            Log.d(TAG, "onChanged viewModel.getStatus() " + aBoolean);
             mBinding.viewWifioff.setVisibility(aBoolean ? View.GONE : View.VISIBLE);
             setMode(aBoolean);
         });
         viewModel.getConnectedAP().observe(this, wifiInfo -> {
-            Log.d("giang17", "setupViewModel: " + wifiInfo);
+            Log.d(TAG, "setupViewModel: " + wifiInfo);
             viewConnectDisconnect(wifiInfo);
         });
     }
 
     void viewConnectDisconnect(WifiInfo wifiInfo) {
         if (wifiInfo != null) {
-            Log.d("giang12", "onChanged viewModel.wifiInfo " + wifiInfo.getSSID());
+            Log.d(TAG, "onChanged viewModel.wifiInfo " + wifiInfo.getSSID());
             int level = wifiInfo.getRssi();
             String ssid = wifiInfo.getSSID();
             mBinding.currentnetwork.setVisibility(View.VISIBLE);
@@ -133,9 +133,8 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             mBinding.connectedlayout.wifiIcon.setImageResource(iconWifi);
         } else {
             mBinding.currentnetwork.setVisibility(View.GONE);
-            Log.d("giang17", "setupViewModel: ");
+            Log.d(TAG, "setupViewModel: ");
         }
-        ;
     }
 
     void setMode(boolean checkOnWifi) {
@@ -169,21 +168,13 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         mBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
-
-    void setEnableWifi() {
-        Intent settingsIntent = new Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY);
-        Log.d("giang", "setEnableWifi: ");
-        startActivityForResult(settingsIntent, 119);
-        mBinding.swOnOff.setChecked(mWifiManager.isWifiEnabled());
-    }
-
     public void setupConnectedView() {
         String ssid;
         ConnectivityManager connManager = (ConnectivityManager)
                 this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (networkInfo.isConnectedOrConnecting()) {
-            Log.d("giang2", "setupConnectedView: " + networkInfo.isConnectedOrConnecting());
+            Log.d(TAG, "setupConnectedView: " + networkInfo.isConnectedOrConnecting());
             final WifiInfo connectionInfo = mWifiManager.getConnectionInfo();
             if (connectionInfo != null && !TextUtils.isEmpty(connectionInfo.getSSID())) {
                 ssid = connectionInfo.getSSID();

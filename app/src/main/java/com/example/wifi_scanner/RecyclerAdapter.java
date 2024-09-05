@@ -18,6 +18,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+    private static final String TAG = "MY_WIFI_SCANNER";
     private List<ScanResult> mScanResults;
     private final Context mContext;
 
@@ -43,7 +44,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         String level = scanResult.level + "";
         String capabilities = scanResult.capabilities;
         int wifistandard = scanResult.getWifiStandard();
-        Log.d("giang13", "onBindViewHolder: " + wifistandard);
+        Log.d(TAG, "onBindViewHolder: " + wifistandard);
         if (!name.equals("") && !level.equals("")) {
             viewLevel(scanResult.level);
             holder.bitmap.setImageResource(iconWifi);
@@ -60,7 +61,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
         holder.itemView.setOnClickListener(v -> {
             if (capabilities.contains("WPA") || capabilities.contains("WEP")) {
-                Log.d("giang", "onClick: item");
+                Log.d(TAG, "onClick: item");
                 Intent intent = new Intent(mContext, PassWifi.class);
                 intent.putExtra("NAME WIFI", name);
                 mContext.startActivity(intent);
