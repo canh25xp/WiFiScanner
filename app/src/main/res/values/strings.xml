@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">WifiApp</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="on">On</string>
+    <string name="wi_fi_scan">Wi-fi Scan</string>
+    <string name="current_network">Current Network</string>
+</resources>
