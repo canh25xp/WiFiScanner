@@ -3,7 +3,6 @@ package com.example.wifi_scanner;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
@@ -17,7 +16,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -32,7 +30,6 @@ import java.util.List;
 
 public class Main extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "MY_WIFI_SCANNER";
-    private static final int QR_CONNECT_REQUEST = 102;
     private LayoutMainBinding mBinding;
     private WifiReceiver mReceiver;
     private WifiManager mWifiManager;
@@ -68,7 +65,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onResume() {
-        startScan();
+        mWifiManager.startScan();
         setupConnectedView();
         super.onResume();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED)
@@ -148,11 +145,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             return;
         }
         setupConnectedView();
-        if (checkOnWifi) startScan();
-    }
-
-    private void startScan() {
-        mWifiManager.startScan();
+        if (checkOnWifi) mWifiManager.startScan();
     }
 
     private void initFilterAction() {
@@ -170,8 +163,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
     public void setupConnectedView() {
         String ssid;
-        ConnectivityManager connManager = (ConnectivityManager)
-                this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (networkInfo.isConnectedOrConnecting()) {
             Log.d(TAG, "setupConnectedView: " + networkInfo.isConnectedOrConnecting());
@@ -179,7 +171,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             if (connectionInfo != null && !TextUtils.isEmpty(connectionInfo.getSSID())) {
                 ssid = connectionInfo.getSSID();
                 int level = connectionInfo.getRssi();
-                int wifi6 = connectionInfo.getWifiStandard();
+                @SuppressLint({"NewApi", "LocalSuppress"}) int wifi6 = connectionInfo.getWifiStandard();
                 ssid = ssid.substring(1, ssid.length() - 1);
                 mBinding.connectedlayout.tvConnectedName.setText(ssid);
                 viewLevel(level);
@@ -192,14 +184,12 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
                 List<ScanResult> networkList = mWifiManager.getScanResults();
                 if (networkList != null) {
                     for (ScanResult network : networkList) {
-                        //check if current connected SSID
                         if (ssid.equals(network.SSID)) {
-                            //get capabilities of current connection
                             String capabilities = network.capabilities;
 
-                            if (capabilities.contains("WPA") || capabilities.contains("WEP")) {
+                            if (capabilities.contains("WPA") || capabilities.contains("WEP"))
                                 mBinding.connectedlayout.iconlockconnected.setVisibility(View.VISIBLE);
-                            } else
+                            else
                                 mBinding.connectedlayout.iconlockconnected.setVisibility(View.GONE);
                         }
                     }
@@ -227,17 +217,4 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             titleWifi = "connected / effect";
         }
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == QR_CONNECT_REQUEST) {
-                String SSID = data.getStringExtra("QR_SSID");
-                String Password = data.getStringExtra("QR_PWD");
-                PassWifi.connectToNetWork(SSID, Password, this);
-            }
-        }
-    }
-
 }
