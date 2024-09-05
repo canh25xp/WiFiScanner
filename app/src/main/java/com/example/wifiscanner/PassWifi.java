@@ -29,8 +29,8 @@ public class PassWifi extends AppCompatActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.activity_pass_wifi);
-        password = (EditText) findViewById(R.id.input_password);
-        button = (Button) findViewById(R.id.connect_button);
+        password = findViewById(R.id.input_password);
+        button = findViewById(R.id.connect_button);
         button.setOnClickListener(this);
         Bundle bundle = getIntent().getExtras();
         TextView title = findViewById(R.id.connect_title);
