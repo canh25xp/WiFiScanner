@@ -42,11 +42,6 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
     private String titleWifi;
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.layout_main);
@@ -62,12 +57,29 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         setupAdapter();
         Log.d("giang", "wifiStatus: " + mWifiManager.isWifiEnabled());
         mMode = mWifiManager.isWifiEnabled();
-        hideActionBar();
+        if (getSupportActionBar() != null) this.getSupportActionBar().hide();
     }
 
-    private void hideActionBar() {
-        if (getSupportActionBar() != null)
-            this.getSupportActionBar().hide();
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        startScan();
+        setupConnectedView();
+        super.onResume();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED)
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(mReceiver);
+        Reposity.instance().removeDataSource(mReceiver.getData(), mReceiver.getWifistatus(), mReceiver.getWifiConnected());
+        super.onDestroy();
     }
 
     private void setupViewModel() {
@@ -84,25 +96,28 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             setMode(aBoolean);
         });
         viewModel.getConnectedAP().observe(this, wifiInfo -> {
-            Log.d("giang17", "setupViewModel: "+ wifiInfo);
+            Log.d("giang17", "setupViewModel: " + wifiInfo);
             viewConnectDisconnect(wifiInfo);
         });
     }
-    void viewConnectDisconnect(WifiInfo wifiInfo){
-        if(wifiInfo != null) {
+
+    void viewConnectDisconnect(WifiInfo wifiInfo) {
+        if (wifiInfo != null) {
             Log.d("giang12", "onChanged viewModel.wifiInfo " + wifiInfo.getSSID());
             int level = wifiInfo.getRssi();
             String ssid = wifiInfo.getSSID();
             mBinding.currentnetwork.setVisibility(View.VISIBLE);
-            mBinding.connectedlayout.tvConnectedName.setText(ssid.substring(1,ssid.length()-1));
+            mBinding.connectedlayout.tvConnectedName.setText(ssid.substring(1, ssid.length() - 1));
             viewLevel(level);
             mBinding.connectedlayout.tvConnectedStatus.setText(titleWifi);
             mBinding.connectedlayout.wifiIcon.setImageResource(iconWifi);
         } else {
             mBinding.currentnetwork.setVisibility(View.GONE);
             Log.d("giang17", "setupViewModel: ");
-        };
+        }
+        ;
     }
+
     void setMode(boolean checkOnWifi) {
         mBinding.infoWifi.setVisibility(checkOnWifi ? View.VISIBLE : View.GONE);
         mBinding.viewWifioff.setVisibility(checkOnWifi ? View.GONE : View.VISIBLE);
@@ -114,79 +129,67 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             return;
         }
         setupConnectedView();
-        if(checkOnWifi) startScan();
+        if (checkOnWifi) startScan();
     }
-    @Override
-    protected void onResume() {
-        startScan();
-        setupConnectedView();
-        super.onResume();
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    0);
-        }
-    }
-    private void startScan(){
+
+    private void startScan() {
         mWifiManager.startScan();
     }
-    private void initFilterAction(){
+
+    private void initFilterAction() {
         filterRefreshUpdate = new IntentFilter();
         filterRefreshUpdate.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
         filterRefreshUpdate.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
         filterRefreshUpdate.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
     }
-    private void setupAdapter(){
+
+    private void setupAdapter() {
         mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mBinding.recyclerView.setAdapter(mAdapter);
         mBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
-    @Override
-    protected void onDestroy() {
-        unregisterReceiver(mReceiver);
-        Reposity.instance().removeDataSource(mReceiver.getData(), mReceiver.getWifistatus(),mReceiver.getWifiConnected());
-        super.onDestroy();
-    }
-    public  void onClick(View v){
+
+
+    public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.swOnOff){
+        if (id == R.id.swOnOff) {
             setEnableWifi();
             setupConnectedView();
             mMode = mWifiManager.isWifiEnabled();
-            if (mBinding.swOnOff.isChecked()){
+            if (mBinding.swOnOff.isChecked()) {
                 setMode(mMode);
             }
-        } else if (id == R.id.wifi_qr_code){
+        } else if (id == R.id.wifi_qr_code) {
             startActivityForResult(new Intent(this, ScannedBarcodeActivity.class), QR_CONNECT_REQUEST);
         }
     }
-    void setEnableWifi(){
+
+    void setEnableWifi() {
         Intent settingsIntent = new Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY);
         Log.d("giang", "setEnableWifi: ");
         startActivityForResult(settingsIntent, 119);
         mBinding.swOnOff.setChecked(mWifiManager.isWifiEnabled());
     }
-    public void setupConnectedView(){
+
+    public void setupConnectedView() {
         String ssid;
         ConnectivityManager connManager = (ConnectivityManager)
                 this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (networkInfo.isConnectedOrConnecting()) {
-            Log.d("giang2", "setupConnectedView: "+networkInfo.isConnectedOrConnecting());
+            Log.d("giang2", "setupConnectedView: " + networkInfo.isConnectedOrConnecting());
             final WifiInfo connectionInfo = mWifiManager.getConnectionInfo();
             if (connectionInfo != null && !TextUtils.isEmpty(connectionInfo.getSSID())) {
                 ssid = connectionInfo.getSSID();
                 int level = connectionInfo.getRssi();
                 int wifi6 = connectionInfo.getWifiStandard();
-                ssid = ssid.substring(1,ssid.length()-1);
+                ssid = ssid.substring(1, ssid.length() - 1);
                 mBinding.connectedlayout.tvConnectedName.setText(ssid);
                 viewLevel(level);
                 mBinding.connectedCardview.setVisibility(View.VISIBLE);
                 mBinding.connectedlayout.tvConnectedStatus.setText(titleWifi);
                 mBinding.connectedlayout.wifiIcon.setImageResource(iconWifi);
-                if(wifi6 == 6) mBinding.connectedlayout.wifi6.setVisibility(View.VISIBLE);
+                if (wifi6 == 6) mBinding.connectedlayout.wifi6.setVisibility(View.VISIBLE);
                 else mBinding.connectedlayout.wifi6.setVisibility(View.GONE);
                 @SuppressLint("MissingPermission")
                 List<ScanResult> networkList = mWifiManager.getScanResults();
@@ -195,29 +198,30 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
                         //check if current connected SSID
                         if (ssid.equals(network.SSID)) {
                             //get capabilities of current connection
-                            String capabilities =  network.capabilities;
+                            String capabilities = network.capabilities;
 
-                            if (capabilities.contains("WPA")||capabilities.contains("WEP")) {
+                            if (capabilities.contains("WPA") || capabilities.contains("WEP")) {
                                 mBinding.connectedlayout.iconlockconnected.setVisibility(View.VISIBLE);
-                            }
-                            else  mBinding.connectedlayout.iconlockconnected.setVisibility(View.GONE);
+                            } else
+                                mBinding.connectedlayout.iconlockconnected.setVisibility(View.GONE);
                         }
                     }
                 }
-            }else {
+            } else {
                 mBinding.connectedCardview.setVisibility(View.GONE);
             }
-        } else{
+        } else {
             mBinding.currentnetwork.setVisibility(View.GONE);
         }
     }
-    private void viewLevel(int level){
-        if(level >= -65){
+
+    private void viewLevel(int level) {
+        if (level >= -65) {
             iconWifi = R.drawable.lv4;
             titleWifi = "connected / very good";
         } else if (level >= -80) {
             iconWifi = R.drawable.wifi_lv3;
-            titleWifi =  "connected / good";
+            titleWifi = "connected / good";
         } else if (level >= -90) {
             iconWifi = R.drawable.wifi_lv2;
             titleWifi = "connected / normal";

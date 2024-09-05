@@ -14,17 +14,32 @@ public class Reposity {
     private final MediatorLiveData<Boolean> mmIsON = new MediatorLiveData<>();
     private final MediatorLiveData<WifiInfo> mWifi = new MediatorLiveData<>();
 
-    private Reposity(){}
-    public static Reposity instance(){return INSTANCE;}
-    public LiveData<List<ScanResult>> getData(){return mData;}
-    public LiveData<Boolean> getWifiStatus(){return mmIsON;}
-    public LiveData<WifiInfo> getWifiAP(){return mWifi;}
-    public void addDataSource(LiveData<List<ScanResult>> data, LiveData<Boolean>status, LiveData<WifiInfo>wifiInfoLiveData){
+    private Reposity() {
+    }
+
+    public static Reposity instance() {
+        return INSTANCE;
+    }
+
+    public LiveData<List<ScanResult>> getData() {
+        return mData;
+    }
+
+    public LiveData<Boolean> getWifiStatus() {
+        return mmIsON;
+    }
+
+    public LiveData<WifiInfo> getWifiAP() {
+        return mWifi;
+    }
+
+    public void addDataSource(LiveData<List<ScanResult>> data, LiveData<Boolean> status, LiveData<WifiInfo> wifiInfoLiveData) {
         mData.addSource(data, mData::setValue);
-        mmIsON.addSource(status,mmIsON::setValue);
+        mmIsON.addSource(status, mmIsON::setValue);
         mWifi.addSource(wifiInfoLiveData, mWifi::setValue);
     }
-    public void removeDataSource(LiveData<List<ScanResult>>data, LiveData<Boolean>status, LiveData<WifiInfo>wifiInfoLiveData){
+
+    public void removeDataSource(LiveData<List<ScanResult>> data, LiveData<Boolean> status, LiveData<WifiInfo> wifiInfoLiveData) {
         mData.removeSource(data);
         mmIsON.removeSource(status);
         mWifi.removeSource(wifiInfoLiveData);

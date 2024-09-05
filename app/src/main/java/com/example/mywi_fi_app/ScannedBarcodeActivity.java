@@ -108,8 +108,7 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
                     returnIntent.putExtra("QR_PWD", intentPassword);
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
-                }
-                else isWifi = false;
+                } else isWifi = false;
             }
         });
     }

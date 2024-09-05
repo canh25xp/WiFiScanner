@@ -17,25 +17,27 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-public class PassWifi extends AppCompatActivity implements View.OnClickListener{
+public class PassWifi extends AppCompatActivity implements View.OnClickListener {
     static Context context;
     Button button;
     EditText password;
     String SSID;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.activity_pass_wifi);
-        password = (EditText)findViewById(R.id.input_password);
-        button = (Button)findViewById(R.id.connect_button);
+        password = (EditText) findViewById(R.id.input_password);
+        button = (Button) findViewById(R.id.connect_button);
         button.setOnClickListener(this);
         Bundle bundle = getIntent().getExtras();
         TextView title = findViewById(R.id.connect_title);
         SSID = bundle.getString("NAME WIFI");
-        title.setText("Connect to "+SSID);
+        title.setText("Connect to " + SSID);
     }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
@@ -45,6 +47,7 @@ public class PassWifi extends AppCompatActivity implements View.OnClickListener{
             finish();
         }
     }
+
     static void connectToNetWork(String SSID, String password, Context mContext) {
         WifiNetworkSpecifier.Builder builder = new WifiNetworkSpecifier.Builder();
         builder.setSsid(SSID);

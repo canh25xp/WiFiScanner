@@ -23,44 +23,53 @@ public class WifiReceiver extends BroadcastReceiver {
     private List<ScanResult> mScanResults = new ArrayList<>();
     String currentWifiConnected;
     private Context context;
+
     public WifiReceiver(WifiManager wifiManager) {
         this.wifiManager = wifiManager;
     }
+
     private final MutableLiveData<List<ScanResult>> mData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isWifiOn = new MutableLiveData<>();
     private final MutableLiveData<WifiInfo> connectedAP = new MutableLiveData<>();
-    public LiveData<List<ScanResult>>getData(){return mData;}
-    public LiveData<Boolean>getWifistatus(){return isWifiOn;}
-    public LiveData<WifiInfo>getWifiConnected(){return connectedAP;}
+
+    public LiveData<List<ScanResult>> getData() {
+        return mData;
+    }
+
+    public LiveData<Boolean> getWifistatus() {
+        return isWifiOn;
+    }
+
+    public LiveData<WifiInfo> getWifiConnected() {
+        return connectedAP;
+    }
 
     @SuppressLint("MissingPermission")
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        Log.d("giang5", "onReceive: "+action);
+        Log.d("giang5", "onReceive: " + action);
 
-        if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(action)){
-            Log.d("giang", "onReceive: SCAN_RESULTS_AVAILABLE_ACTION"+mScanResults.size());
+        if (WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(action)) {
+            Log.d("giang", "onReceive: SCAN_RESULTS_AVAILABLE_ACTION" + mScanResults.size());
             ScanResultWifiChange(wifiManager.getScanResults());
-        }
-        else if (WifiManager.NETWORK_STATE_CHANGED_ACTION.equals(action)){
+        } else if (WifiManager.NETWORK_STATE_CHANGED_ACTION.equals(action)) {
             currentWifiConnected = getCurrentSsid(context);
             if (currentWifiConnected != null) {
                 connectedAP.setValue(wifiManager.getConnectionInfo());
             } else
                 connectedAP.setValue(null);
             ScanResultWifiChange(wifiManager.getScanResults());
-        }
-        else if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)){
-            Log.d("giang", "onReceive: WIFI_STATE_CHANGED_ACTION"+wifiManager.isWifiEnabled());
-            if(wifiManager.isWifiEnabled()){
+        } else if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {
+            Log.d("giang", "onReceive: WIFI_STATE_CHANGED_ACTION" + wifiManager.isWifiEnabled());
+            if (wifiManager.isWifiEnabled()) {
                 isWifiOn.setValue(true);
-            }
-            else{
+            } else {
                 isWifiOn.setValue(false);
             }
         }
     }
+
     public String getCurrentSsid(@NonNull Context context) {
         WifiManager manager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         String ssid = null;
@@ -70,23 +79,24 @@ public class WifiReceiver extends BroadcastReceiver {
                 NetworkInfo.DetailedState state = WifiInfo.getDetailedStateOf(wifiInfo.getSupplicantState());
                 if (state == NetworkInfo.DetailedState.CONNECTED || state == NetworkInfo.DetailedState.OBTAINING_IPADDR) {
                     ssid = wifiInfo.getSSID();
-                    ssid = ssid.substring(1,ssid.length() - 1);
+                    ssid = ssid.substring(1, ssid.length() - 1);
                 }
             }
         }
         return ssid;
     }
-    private void ScanResultWifiChange(@Nullable List<ScanResult> ScanResults){
+
+    private void ScanResultWifiChange(@Nullable List<ScanResult> ScanResults) {
         mScanResults.clear();
-        for (ScanResult scanResult:ScanResults){
-            String name = scanResult.SSID+"";
+        for (ScanResult scanResult : ScanResults) {
+            String name = scanResult.SSID + "";
             if (currentWifiConnected != null && currentWifiConnected != "" &&
                     currentWifiConnected.equals(name)) {
                 continue;
             }
 
-            Log.d("giang2", "SSID "+name);
-            if(!name.equals("")&&scanResult.level >= -100){
+            Log.d("giang2", "SSID " + name);
+            if (!name.equals("") && scanResult.level >= -100) {
                 mScanResults.add(scanResult);
             }
         }
