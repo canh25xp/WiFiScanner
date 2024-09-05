@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 public class PassWifi extends AppCompatActivity implements View.OnClickListener {
-    static Context context;
+    private Context context;
     Button button;
     EditText password;
     String SSID;
