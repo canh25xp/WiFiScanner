@@ -1,5 +1,6 @@
 package com.example.wifiscanner;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.ScanResult;
@@ -43,7 +44,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         String name = scanResult.SSID + "";
         String level = scanResult.level + "";
         String capabilities = scanResult.capabilities;
-        int wifistandard = scanResult.getWifiStandard();
+        @SuppressLint({"NewApi", "LocalSuppress"}) int wifistandard = scanResult.getWifiStandard();
         Log.d(TAG, "onBindViewHolder: " + wifistandard);
         if (!name.equals("") && !level.equals("")) {
             viewLevel(scanResult.level);
