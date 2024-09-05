@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -13,6 +13,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:paddingStart="8dp">
+
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent">
@@ -62,7 +63,7 @@
                     android:paddingHorizontal="12dp"
                     android:paddingTop="5dp"
                     android:singleLine="true"
-                    android:text="Wi-Fi name ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
+                    android:text="Wi-Fi name"
                     android:textColor="@color/blue"
                     android:textSize="18sp" />
 
