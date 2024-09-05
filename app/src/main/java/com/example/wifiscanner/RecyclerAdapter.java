@@ -96,11 +96,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            bitmap = itemView.findViewById(R.id.wifi_icon);
+            bitmap = itemView.findViewById(R.id.img_wifi_icon);
             wifiName = itemView.findViewById(R.id.tv_wifi_name);
             wifiStatus = itemView.findViewById(R.id.tv_wifi_status);
-            iconlock = itemView.findViewById(R.id.icon_lock);
-            wifi6 = itemView.findViewById(R.id.wifi6);
+            iconlock = itemView.findViewById(R.id.img_lock);
+            wifi6 = itemView.findViewById(R.id.img_wifi_6);
         }
     }
 

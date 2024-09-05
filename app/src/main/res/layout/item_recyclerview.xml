@@ -18,7 +18,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/wifi_icon"
+                    android:id="@+id/img_wifi_icon"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center"
@@ -26,7 +26,7 @@
                     android:src="@drawable/wifi_lv1" />
 
                 <ImageView
-                    android:id="@+id/wifi6"
+                    android:id="@+id/img_wifi_6"
                     android:layout_width="7dp"
                     android:layout_height="11dp"
                     android:layout_gravity="right"
@@ -37,7 +37,7 @@
                     android:src="@drawable/wifi6" />
 
                 <ImageView
-                    android:id="@+id/icon_lock"
+                    android:id="@+id/img_lock"
                     android:layout_width="12dp"
                     android:layout_height="12dp"
                     android:layout_gravity="bottom|right"
