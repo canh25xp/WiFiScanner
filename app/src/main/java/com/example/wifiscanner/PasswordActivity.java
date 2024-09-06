@@ -2,6 +2,7 @@ package com.example.wifiscanner;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,5 +25,6 @@ public class PasswordActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        Toast.makeText(this, "TODO: Implement this", Toast.LENGTH_SHORT).show();
     }
 }

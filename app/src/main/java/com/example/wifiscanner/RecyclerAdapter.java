@@ -20,7 +20,7 @@ import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private static final String TAG = "MY_WIFI_SCANNER";
-    private List<ScanResult> mScanResults;
+    private final List<ScanResult> mScanResults;
     private final Context mContext;
 
     public RecyclerAdapter(Context context) {
@@ -28,8 +28,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         mScanResults = new ArrayList<>();
     }
 
-    int iconWifi = 0;
-    String titleWifi = "";
+    private int iconWifi = 0;
+    private String titleWifi = "";
 
     @NonNull
     @Override
@@ -41,22 +41,22 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, int position) {
         ScanResult scanResult = mScanResults.get(position);
-        String name = scanResult.SSID + "";
-        String level = scanResult.level + "";
+        String name = scanResult.SSID;
+        int level = scanResult.level;
         String capabilities = scanResult.capabilities;
-        @SuppressLint({"NewApi", "LocalSuppress"}) int wifistandard = scanResult.getWifiStandard();
-        Log.d(TAG, "onBindViewHolder: " + wifistandard);
-        if (!name.equals("") && !level.equals("")) {
-            viewLevel(scanResult.level);
-            holder.bitmap.setImageResource(iconWifi);
-            holder.wifiName.setText(scanResult.SSID + "");
+
+        @SuppressLint({"NewApi", "LocalSuppress"}) int wifiStandard = scanResult.getWifiStandard();
+        Log.d(TAG, "onBindViewHolder: " + wifiStandard);
+        if (!name.isEmpty()) {
+            viewLevel(level);
+            holder.wifiIcon.setImageResource(iconWifi);
+            holder.wifiName.setText(scanResult.SSID);
             holder.wifiStatus.setText(titleWifi);
 
-            if (capabilities.contains("WPA") || capabilities.contains("WEP"))
-                holder.iconlock.setVisibility(View.VISIBLE);
-            else holder.iconlock.setVisibility(View.GONE);
+            if (capabilities.contains("WPA") || capabilities.contains("WEP")) holder.wifiLock.setVisibility(View.VISIBLE);
+            else holder.wifiLock.setVisibility(View.GONE);
 
-            if (wifistandard == 6) holder.wifi6.setVisibility(View.VISIBLE);
+            if (wifiStandard == 6) holder.wifi6.setVisibility(View.VISIBLE);
             else holder.wifi6.setVisibility(View.GONE);
 
         }
@@ -75,6 +75,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return mScanResults.size();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void updateData(List<ScanResult> wifiList) {
         mScanResults.clear();
         mScanResults.addAll(wifiList);
@@ -82,25 +83,25 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         notifyDataSetChanged();
     }
 
-    private class levelSort implements Comparator<ScanResult> {
+    private static class levelSort implements Comparator<ScanResult> {
         @Override
         public int compare(ScanResult o1, ScanResult o2) {
             return o2.level - o1.level;
         }
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView bitmap;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView wifiIcon;
         TextView wifiName;
         TextView wifiStatus;
-        ImageView iconlock, wifi6;
+        ImageView wifiLock, wifi6;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            bitmap = itemView.findViewById(R.id.img_wifi_icon);
+            wifiIcon = itemView.findViewById(R.id.img_wifi_icon);
             wifiName = itemView.findViewById(R.id.tv_wifi_name);
             wifiStatus = itemView.findViewById(R.id.tv_wifi_status);
-            iconlock = itemView.findViewById(R.id.img_lock);
+            wifiLock = itemView.findViewById(R.id.img_wifi_lock);
             wifi6 = itemView.findViewById(R.id.img_wifi_6);
         }
     }

@@ -21,9 +21,8 @@ import java.util.List;
 public class WifiReceiver extends BroadcastReceiver {
     private static final String TAG = "MY_WIFI_SCANNER";
     WifiManager wifiManager;
-    private List<ScanResult> mScanResults = new ArrayList<>();
+    private final List<ScanResult> mScanResults = new ArrayList<>();
     String currentWifiConnected;
-    private Context context;
 
     public WifiReceiver(WifiManager wifiManager) {
         this.wifiManager = wifiManager;
@@ -37,7 +36,7 @@ public class WifiReceiver extends BroadcastReceiver {
         return mData;
     }
 
-    public LiveData<Boolean> getWifistatus() {
+    public LiveData<Boolean> getWifiStatus() {
         return isWifiOn;
     }
 
@@ -56,18 +55,17 @@ public class WifiReceiver extends BroadcastReceiver {
             ScanResultWifiChange(wifiManager.getScanResults());
         } else if (WifiManager.NETWORK_STATE_CHANGED_ACTION.equals(action)) {
             currentWifiConnected = getCurrentSsid(context);
-            if (currentWifiConnected != null) {
+            if (currentWifiConnected != null)
                 connectedAP.setValue(wifiManager.getConnectionInfo());
-            } else
+            else
                 connectedAP.setValue(null);
             ScanResultWifiChange(wifiManager.getScanResults());
         } else if (WifiManager.WIFI_STATE_CHANGED_ACTION.equals(action)) {
             Log.d(TAG, "onReceive: WIFI_STATE_CHANGED_ACTION" + wifiManager.isWifiEnabled());
-            if (wifiManager.isWifiEnabled()) {
+            if (wifiManager.isWifiEnabled())
                 isWifiOn.setValue(true);
-            } else {
+            else
                 isWifiOn.setValue(false);
-            }
         }
     }
 
@@ -89,17 +87,15 @@ public class WifiReceiver extends BroadcastReceiver {
 
     private void ScanResultWifiChange(@Nullable List<ScanResult> ScanResults) {
         mScanResults.clear();
+        assert ScanResults != null;
         for (ScanResult scanResult : ScanResults) {
-            String name = scanResult.SSID + "";
-            if (currentWifiConnected != null && currentWifiConnected != "" &&
-                    currentWifiConnected.equals(name)) {
+            String name = scanResult.SSID;
+            if (currentWifiConnected != null && !currentWifiConnected.isEmpty() && currentWifiConnected.equals(name))
                 continue;
-            }
 
             Log.d(TAG, "SSID " + name);
-            if (!name.equals("") && scanResult.level >= -100) {
+            if (!name.isEmpty() && scanResult.level >= -100)
                 mScanResults.add(scanResult);
-            }
         }
         mData.setValue(mScanResults);
     }

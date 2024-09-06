@@ -3,6 +3,7 @@ package com.example.wifiscanner;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private WifiReceiver mReceiver;
     private WifiManager mWifiManager;
     private final RecyclerAdapter mAdapter = new RecyclerAdapter(this);
-    private IntentFilter filterRefreshUpdate;
+    private IntentFilter mFilterRefreshUpdate;
     private boolean mWifiState;
     private int iconWifi;
     private String titleWifi;
@@ -53,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBinding.swWifi.setOnClickListener(this);
         mBinding.btnQrCode.setOnClickListener(this);
         initFilterAction();
-        registerReceiver(mReceiver, filterRefreshUpdate);
-        Repository.instance().addDataSource(mReceiver.getData(), mReceiver.getWifistatus(), mReceiver.getWifiConnected());
+        registerReceiver(mReceiver, mFilterRefreshUpdate);
+        Repository.instance().addDataSource(mReceiver.getData(), mReceiver.getWifiStatus(), mReceiver.getWifiConnected());
         setMode(mWifiState);
         setupViewModel();
         setupAdapter();
@@ -84,11 +85,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
     }
 
-
     @Override
     protected void onDestroy() {
         unregisterReceiver(mReceiver);
-        Repository.instance().removeDataSource(mReceiver.getData(), mReceiver.getWifistatus(), mReceiver.getWifiConnected());
+        Repository.instance().removeDataSource(mReceiver.getData(), mReceiver.getWifiStatus(), mReceiver.getWifiConnected());
         super.onDestroy();
     }
 
@@ -107,7 +107,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, "WiFi On", Toast.LENGTH_SHORT).show();
             }
         } else if (id == R.id.btn_qr_code) {
-            Toast.makeText(this, "TODO: Implement this", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, QRCodeActivity.class);
+            this.startActivity(intent);
         }
     }
 
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBinding.svWifi.setVisibility(checkOnWifi ? View.VISIBLE : View.GONE);
         mBinding.tvWifiOff.setVisibility(checkOnWifi ? View.GONE : View.VISIBLE);
         mBinding.cvQrCode.setVisibility(checkOnWifi ? View.VISIBLE : View.GONE);
-        mBinding.swWifi.setText(checkOnWifi ? "ON" : "OFF");
+        mBinding.swWifi.setText(checkOnWifi ? "On" : "Off");
         mBinding.swWifi.setChecked(checkOnWifi);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) return;
@@ -126,10 +127,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initFilterAction() {
-        filterRefreshUpdate = new IntentFilter();
-        filterRefreshUpdate.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-        filterRefreshUpdate.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-        filterRefreshUpdate.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        mFilterRefreshUpdate = new IntentFilter();
+        mFilterRefreshUpdate.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+        mFilterRefreshUpdate.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        mFilterRefreshUpdate.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
     }
 
     private void setupAdapter() {
@@ -177,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String ssid;
         ConnectivityManager connManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (networkInfo.isConnectedOrConnecting()) {
+        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
             Log.d(TAG, "setupConnectedView: " + networkInfo.isConnectedOrConnecting());
             final WifiInfo connectionInfo = mWifiManager.getConnectionInfo();
             if (connectionInfo != null && !TextUtils.isEmpty(connectionInfo.getSSID())) {
@@ -209,8 +210,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 mBinding.cvConnected.setVisibility(View.GONE);
             }
-        } else {
-            mBinding.cvCurrentNetwork.setVisibility(View.GONE);
         }
     }
 
