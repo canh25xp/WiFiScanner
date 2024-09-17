@@ -28,8 +28,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         mScanResults = new ArrayList<>();
     }
 
-    private int iconWifi = 0;
-    private String titleWifi = "";
+    public int iconWifi = 0;
+    public String titleWifi = "";
 
     @NonNull
     @Override
@@ -106,7 +106,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         }
     }
 
-    private void viewLevel(int level) {
+    public void viewLevel(int level) {
         if (level >= -65) {
             iconWifi = R.drawable.lv4;
             titleWifi = "very good";

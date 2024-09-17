@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final RecyclerAdapter mAdapter = new RecyclerAdapter(this);
     private IntentFilter mFilterRefreshUpdate;
     private boolean mWifiState;
-    private int iconWifi;
-    private String titleWifi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,9 +163,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String ssid = wifiInfo.getSSID();
             mBinding.cvCurrentNetwork.setVisibility(View.VISIBLE);
             mBinding.layoutConnected.tvConnectedName.setText(ssid.substring(1, ssid.length() - 1));
-            viewLevel(level);
-            mBinding.layoutConnected.tvConnectedStatus.setText(titleWifi);
-            mBinding.layoutConnected.imgWifiIcon.setImageResource(iconWifi);
+            mAdapter.viewLevel(level);
+            mBinding.layoutConnected.tvConnectedStatus.setText(mAdapter.titleWifi);
+            mBinding.layoutConnected.imgWifiIcon.setImageResource(mAdapter.iconWifi);
         } else {
             mBinding.cvCurrentNetwork.setVisibility(View.GONE);
             Log.d(TAG, "setupViewModel: ");
@@ -187,10 +185,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @SuppressLint({"NewApi", "LocalSuppress"}) int wifi6 = connectionInfo.getWifiStandard();
                 ssid = ssid.substring(1, ssid.length() - 1);
                 mBinding.layoutConnected.tvConnectedName.setText(ssid);
-                viewLevel(level);
+                mAdapter.viewLevel(level);
                 mBinding.cvConnected.setVisibility(View.VISIBLE);
-                mBinding.layoutConnected.tvConnectedStatus.setText(titleWifi);
-                mBinding.layoutConnected.imgWifiIcon.setImageResource(iconWifi);
+                mBinding.layoutConnected.tvConnectedStatus.setText(mAdapter.titleWifi);
+                mBinding.layoutConnected.imgWifiIcon.setImageResource(mAdapter.iconWifi);
                 if (wifi6 == 6) mBinding.layoutConnected.imgWifi6.setVisibility(View.VISIBLE);
                 else mBinding.layoutConnected.imgWifi6.setVisibility(View.GONE);
                 @SuppressLint("MissingPermission")
@@ -210,22 +208,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 mBinding.cvConnected.setVisibility(View.GONE);
             }
-        }
-    }
-
-    private void viewLevel(int level) {
-        if (level >= -65) {
-            iconWifi = R.drawable.lv4;
-            titleWifi = "connected / very good";
-        } else if (level >= -80) {
-            iconWifi = R.drawable.wifi_lv3;
-            titleWifi = "connected / good";
-        } else if (level >= -90) {
-            iconWifi = R.drawable.wifi_lv2;
-            titleWifi = "connected / normal";
-        } else {
-            iconWifi = R.drawable.wifi_lv1;
-            titleWifi = "connected / effect";
         }
     }
 }
