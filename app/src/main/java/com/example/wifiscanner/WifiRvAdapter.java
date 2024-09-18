@@ -18,27 +18,27 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+public class WifiRvAdapter extends RecyclerView.Adapter<WifiRvAdapter.ViewHolder> {
     private static final String TAG = "MY_WIFI_SCANNER";
     private final List<ScanResult> mScanResults;
     private final Context mContext;
     public int iconWifi = 0;
     public String titleWifi = "";
 
-    public RecyclerAdapter(Context context) {
+    public WifiRvAdapter(Context context) {
         mContext = context;
         mScanResults = new ArrayList<>();
     }
 
     @NonNull
     @Override
-    public RecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public WifiRvAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_recyclerview, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WifiRvAdapter.ViewHolder holder, int position) {
         ScanResult scanResult = mScanResults.get(position);
         String name = scanResult.SSID;
         int level = scanResult.level;

@@ -38,15 +38,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ActivityMainBinding mBinding;
     private WifiReceiver mReceiver;
     private WifiManager mWifiManager;
-    private final RecyclerAdapter mAdapter = new RecyclerAdapter(this);
+    private WifiRvAdapter mAdapter;
     private IntentFilter mFilterRefreshUpdate;
     private boolean mWifiState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "Create");
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        mAdapter = new WifiRvAdapter(this);
         mWifiState = mWifiManager.isWifiEnabled();
         mReceiver = new WifiReceiver(mWifiManager);
         mBinding.swWifi.setOnClickListener(this);
@@ -71,11 +73,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onStart() {
+        Log.d(TAG, "Start");
         super.onStart();
     }
 
     @Override
     protected void onResume() {
+        Log.d(TAG, "Resume");
         super.onResume();
         mWifiManager.startScan();
         setupConnectedView();
@@ -84,7 +88,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onPause() {
+        Log.d(TAG, "Pause");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "Stop");
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
+        Log.d(TAG, "Destroy");
         unregisterReceiver(mReceiver);
         Repository.instance().removeDataSource(mReceiver.getData(), mReceiver.getWifiStatus(), mReceiver.getWifiConnected());
         super.onDestroy();
