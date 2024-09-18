@@ -22,14 +22,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     private static final String TAG = "MY_WIFI_SCANNER";
     private final List<ScanResult> mScanResults;
     private final Context mContext;
+    public int iconWifi = 0;
+    public String titleWifi = "";
 
     public RecyclerAdapter(Context context) {
         mContext = context;
         mScanResults = new ArrayList<>();
     }
-
-    public int iconWifi = 0;
-    public String titleWifi = "";
 
     @NonNull
     @Override
