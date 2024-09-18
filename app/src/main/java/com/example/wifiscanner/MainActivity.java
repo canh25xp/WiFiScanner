@@ -47,28 +47,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d(TAG, "Create");
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        mAdapter = new WifiRvAdapter(this);
-        mWifiState = mWifiManager.isWifiEnabled();
-        mReceiver = new WifiReceiver(mWifiManager);
-        mBinding.swWifi.setOnClickListener(this);
-        mBinding.btnQrCode.setOnClickListener(this);
-        initFilterAction();
-        registerReceiver(mReceiver, mFilterRefreshUpdate);
-        Repository.instance().addDataSource(mReceiver.getData(), mReceiver.getWifiStatus(), mReceiver.getWifiConnected());
-        setMode(mWifiState);
-        setupViewModel();
-        setupAdapter();
-        Log.d(TAG, "mWifiState: " + mWifiState);
 
+        // Enabled Edge to Edge display
         EdgeToEdge.enable(this);
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_main), (v, windowInsets) -> {
             Insets systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return WindowInsetsCompat.CONSUMED;
         });
+
+        // Hide the action bar on top
         if (getSupportActionBar() != null) this.getSupportActionBar().hide();
+
+        mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        mAdapter = new WifiRvAdapter(this);
+        mReceiver = new WifiReceiver(mWifiManager);
+        mBinding.swWifi.setOnClickListener(this);
+        mBinding.btnQrCode.setOnClickListener(this);
+
+        initFilterAction();
+        registerReceiver(mReceiver, mFilterRefreshUpdate);
+        Repository.instance().addDataSource(mReceiver.getData(), mReceiver.getWifiStatus(), mReceiver.getWifiConnected());
+
+        mWifiState = mWifiManager.isWifiEnabled();
+        setMode(mWifiState);
+        setupViewModel();
+        setupAdapter();
     }
 
     @Override
