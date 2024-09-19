@@ -21,9 +21,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class PasswordActivity extends AppCompatActivity implements View.OnClickListener {
-    Button button;
-    EditText password;
-    String SSID;
+    private EditText password;
+    private String SSID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +39,7 @@ public class PasswordActivity extends AppCompatActivity implements View.OnClickL
         if (getSupportActionBar() != null) this.getSupportActionBar().hide();
 
         password = findViewById(R.id.et_password);
-        button = findViewById(R.id.btn_connect);
+        Button button = findViewById(R.id.btn_connect);
         button.setOnClickListener(this);
         Bundle bundle = getIntent().getExtras();
         TextView title = findViewById(R.id.tv_connect_title);
