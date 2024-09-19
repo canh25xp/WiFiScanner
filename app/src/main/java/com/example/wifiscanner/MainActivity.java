@@ -61,19 +61,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (getSupportActionBar() != null) this.getSupportActionBar().hide();
 
         mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        mAdapter = new WifiRvAdapter(this);
         mReceiver = new WifiReceiver(mWifiManager);
         mBinding.swWifi.setOnClickListener(this);
         mBinding.btnQrCode.setOnClickListener(this);
 
-        initFilterAction();
+        // Init Filter Action
+        mFilterRefreshUpdate = new IntentFilter();
+        mFilterRefreshUpdate.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+        mFilterRefreshUpdate.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        mFilterRefreshUpdate.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         registerReceiver(mReceiver, mFilterRefreshUpdate);
         Repository.instance().addDataSource(mReceiver.getData(), mReceiver.getWifiStatus(), mReceiver.getWifiConnected());
 
         mWifiState = mWifiManager.isWifiEnabled();
         setMode(mWifiState);
         setupViewModel();
-        setupAdapter();
+
+        // Setup Adapter
+        mAdapter = new WifiRvAdapter(this);
+        mBinding.rcAvailableNetworks.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.rcAvailableNetworks.setAdapter(mAdapter);
+        mBinding.rcAvailableNetworks.setItemAnimator(new DefaultItemAnimator());
     }
 
     @Override
@@ -138,25 +146,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBinding.cvQrCode.setVisibility(checkOnWifi ? View.VISIBLE : View.GONE);
         mBinding.swWifi.setText(checkOnWifi ? "On" : "Off");
         mBinding.swWifi.setChecked(checkOnWifi);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) return;
-
-        setupConnectedView();
-
-        if (checkOnWifi) mWifiManager.startScan();
-    }
-
-    private void initFilterAction() {
-        mFilterRefreshUpdate = new IntentFilter();
-        mFilterRefreshUpdate.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-        mFilterRefreshUpdate.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-        mFilterRefreshUpdate.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-    }
-
-    private void setupAdapter() {
-        mBinding.rcAvailableNetworks.setLayoutManager(new LinearLayoutManager(this));
-        mBinding.rcAvailableNetworks.setAdapter(mAdapter);
-        mBinding.rcAvailableNetworks.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void setupViewModel() {
@@ -206,6 +195,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ssid = ssid.substring(1, ssid.length() - 1); // Remove outline quotes
                 int level = connectionInfo.getRssi();
                 int standard = connectionInfo.getWifiStandard();
+
+                String bssid = connectionInfo.getBSSID();
+                int freq = connectionInfo.getFrequency();
+
                 mBinding.layoutConnected.tvConnectedName.setText(ssid);
                 mAdapter.viewLevel(level);
                 mBinding.layoutConnected.tvConnectedStatus.setText(mAdapter.titleWifi);
