@@ -6,4 +6,6 @@
     <string name="wifi_off_message">To see available networks, turn on WiFi</string>
     <string name="default_wifi_name">WiFi name</string>
     <string name="wifi_no_signal">no signal</string>
+    <string name="password_activity_title">Connect to WiFi</string>
+    <string name="btn_connect">CONNECT</string>
 </resources>
