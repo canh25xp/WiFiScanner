@@ -193,6 +193,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /** @noinspection deprecation*/
+    @SuppressLint("NewApi")
     public void setupConnectedView() {
         String ssid;
         ConnectivityManager connManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -203,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (connectionInfo != null && !TextUtils.isEmpty(connectionInfo.getSSID())) {
                 ssid = connectionInfo.getSSID();
                 int level = connectionInfo.getRssi();
-                @SuppressLint({"NewApi", "LocalSuppress"}) int wifi6 = connectionInfo.getWifiStandard();
+                int wifi6 = connectionInfo.getWifiStandard();
                 ssid = ssid.substring(1, ssid.length() - 1);
                 mBinding.layoutConnected.tvConnectedName.setText(ssid);
                 mAdapter.viewLevel(level);
