@@ -14,24 +14,15 @@ public class Repository {
     private final MediatorLiveData<Boolean> mmIsON = new MediatorLiveData<>();
     private final MediatorLiveData<WifiInfo> mWifi = new MediatorLiveData<>();
 
-    private Repository() {
-    }
+    private Repository() {}
 
-    public static Repository instance() {
-        return INSTANCE;
-    }
+    public static Repository instance() {return INSTANCE;}
 
-    public LiveData<List<ScanResult>> getData() {
-        return mData;
-    }
+    public LiveData<List<ScanResult>> getData() {return mData;}
 
-    public LiveData<Boolean> getWifiStatus() {
-        return mmIsON;
-    }
+    public LiveData<Boolean> getWifiStatus() {return mmIsON;}
 
-    public LiveData<WifiInfo> getWifiAP() {
-        return mWifi;
-    }
+    public LiveData<WifiInfo> getWifiAP() {return mWifi;}
 
     public void addDataSource(LiveData<List<ScanResult>> data, LiveData<Boolean> status, LiveData<WifiInfo> wifiInfoLiveData) {
         mData.addSource(data, mData::setValue);

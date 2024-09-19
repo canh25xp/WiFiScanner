@@ -32,17 +32,11 @@ public class WifiReceiver extends BroadcastReceiver {
     private final MutableLiveData<Boolean> isWifiOn = new MutableLiveData<>();
     private final MutableLiveData<WifiInfo> connectedAP = new MutableLiveData<>();
 
-    public LiveData<List<ScanResult>> getData() {
-        return mData;
-    }
+    public LiveData<List<ScanResult>> getData() {return mData;}
 
-    public LiveData<Boolean> getWifiStatus() {
-        return isWifiOn;
-    }
+    public LiveData<Boolean> getWifiStatus() {return isWifiOn;}
 
-    public LiveData<WifiInfo> getWifiConnected() {
-        return connectedAP;
-    }
+    public LiveData<WifiInfo> getWifiConnected() {return connectedAP;}
 
     @SuppressLint("MissingPermission")
     @Override
