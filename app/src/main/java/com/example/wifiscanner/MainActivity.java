@@ -33,6 +33,7 @@ import com.example.wifiscanner.databinding.ActivityMainBinding;
 
 import java.util.List;
 
+/** @noinspection ALL*/
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "MY_WIFI_SCANNER";
     private ActivityMainBinding mBinding;
@@ -193,7 +194,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    /** @noinspection deprecation*/
     @SuppressLint("NewApi")
     public void setupConnectedView() {
         String ssid;
