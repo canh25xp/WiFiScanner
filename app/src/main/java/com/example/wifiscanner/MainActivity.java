@@ -50,9 +50,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Enabled Edge to Edge display
         EdgeToEdge.enable(this);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_main), (v, windowInsets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_main), (view, windowInsets) -> {
             Insets systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return WindowInsetsCompat.CONSUMED;
         });
 
