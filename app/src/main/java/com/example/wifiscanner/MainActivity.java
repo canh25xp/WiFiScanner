@@ -1,7 +1,6 @@
 package com.example.wifiscanner;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -37,7 +36,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "MY_WIFI_SCANNER";
     private ActivityMainBinding mBinding;
-    private WifiReceiver mReceiver;
+    private WifiReceiver mWifiReceiver;
     private WifiManager mWifiManager;
     private WifiRvAdapter mAdapter;
     private IntentFilter mFilterRefreshUpdate;
@@ -61,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (getSupportActionBar() != null) this.getSupportActionBar().hide();
 
         mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        mReceiver = new WifiReceiver(mWifiManager);
+        mWifiReceiver = new WifiReceiver(mWifiManager);
         mBinding.swWifi.setOnClickListener(this);
         mBinding.btnQrCode.setOnClickListener(this);
 
@@ -70,8 +69,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mFilterRefreshUpdate.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
         mFilterRefreshUpdate.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
         mFilterRefreshUpdate.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-        registerReceiver(mReceiver, mFilterRefreshUpdate);
-        Repository.instance().addDataSource(mReceiver.getData(), mReceiver.getWifiStatus(), mReceiver.getWifiConnected());
+        registerReceiver(mWifiReceiver, mFilterRefreshUpdate);
+        Repository.instance().addDataSource(mWifiReceiver.getData(), mWifiReceiver.getWifiStatus(), mWifiReceiver.getWifiConnected());
 
         mWifiState = mWifiManager.isWifiEnabled();
         setMode(mWifiState);
@@ -115,8 +114,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         Log.d(TAG, "Destroy");
-        unregisterReceiver(mReceiver);
-        Repository.instance().removeDataSource(mReceiver.getData(), mReceiver.getWifiStatus(), mReceiver.getWifiConnected());
+        unregisterReceiver(mWifiReceiver);
+        Repository.instance().removeDataSource(mWifiReceiver.getData(), mWifiReceiver.getWifiStatus(), mWifiReceiver.getWifiConnected());
         super.onDestroy();
     }
 
