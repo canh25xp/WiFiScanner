@@ -194,37 +194,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @SuppressLint("NewApi")
     public void setupConnectedView() {
-        String ssid;
-        ConnectivityManager connManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
             Log.d(TAG, "setupConnectedView: " + networkInfo.isConnectedOrConnecting());
             final WifiInfo connectionInfo = mWifiManager.getConnectionInfo();
             if (connectionInfo != null && !TextUtils.isEmpty(connectionInfo.getSSID())) {
-                ssid = connectionInfo.getSSID();
+                String ssid = connectionInfo.getSSID();
+                ssid = ssid.substring(1, ssid.length() - 1); // Remove outline quotes
                 int level = connectionInfo.getRssi();
-                int wifi6 = connectionInfo.getWifiStandard();
-                ssid = ssid.substring(1, ssid.length() - 1);
+                int standard = connectionInfo.getWifiStandard();
                 mBinding.layoutConnected.tvConnectedName.setText(ssid);
                 mAdapter.viewLevel(level);
                 mBinding.cvConnected.setVisibility(View.VISIBLE);
                 mBinding.layoutConnected.tvConnectedStatus.setText(mAdapter.titleWifi);
                 mBinding.layoutConnected.imgWifiIcon.setImageResource(mAdapter.iconWifi);
-                if (wifi6 == 6) mBinding.layoutConnected.imgWifi6.setVisibility(View.VISIBLE);
-                else mBinding.layoutConnected.imgWifi6.setVisibility(View.GONE);
-                @SuppressLint("MissingPermission")
+                mBinding.layoutConnected.imgWifi6.setVisibility((standard == 6) ? View.VISIBLE : View.GONE);
                 List<ScanResult> networkList = mWifiManager.getScanResults();
                 if (networkList != null) {
                     for (ScanResult network : networkList) {
                         if (ssid.equals(network.SSID)) {
                             String capabilities = network.capabilities;
-
-                            if (capabilities.contains("WPA") || capabilities.contains("WEP"))
-                                mBinding.layoutConnected.imgWifiLockConnected.setVisibility(View.VISIBLE);
-                            else
-                                mBinding.layoutConnected.imgWifiLockConnected.setVisibility(View.GONE);
+                            boolean secured = capabilities.contains("WPA") || capabilities.contains("WEP");
+                            mBinding.layoutConnected.imgWifiLockConnected.setVisibility(secured ? View.VISIBLE : View.GONE);
                         }
                     }
                 }
