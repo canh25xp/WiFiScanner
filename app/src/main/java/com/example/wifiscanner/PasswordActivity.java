@@ -39,11 +39,11 @@ public class PasswordActivity extends AppCompatActivity implements View.OnClickL
         // Hide the action bar on top
         if (getSupportActionBar() != null) this.getSupportActionBar().hide();
 
-        password = findViewById(R.id.input_password);
-        button = findViewById(R.id.connect_button);
+        password = findViewById(R.id.et_password);
+        button = findViewById(R.id.btn_connect);
         button.setOnClickListener(this);
         Bundle bundle = getIntent().getExtras();
-        TextView title = findViewById(R.id.connect_title);
+        TextView title = findViewById(R.id.tv_connect_title);
         assert bundle != null;
         SSID = bundle.getString("NAME WIFI");
         title.setText("Connect to " + SSID);
@@ -52,7 +52,7 @@ public class PasswordActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.connect_button) {
+        if (id == R.id.btn_connect) {
             connectToNetWork(SSID, password.getText().toString(), this);
             finish();
         }
