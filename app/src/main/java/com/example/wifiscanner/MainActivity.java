@@ -201,13 +201,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d(TAG, "setupConnectedView: " + networkInfo.isConnectedOrConnecting());
             final WifiInfo connectionInfo = mWifiManager.getConnectionInfo();
             if (connectionInfo != null && !TextUtils.isEmpty(connectionInfo.getSSID())) {
+                mBinding.cvConnected.setVisibility(View.VISIBLE);
                 String ssid = connectionInfo.getSSID();
                 ssid = ssid.substring(1, ssid.length() - 1); // Remove outline quotes
                 int level = connectionInfo.getRssi();
                 int standard = connectionInfo.getWifiStandard();
                 mBinding.layoutConnected.tvConnectedName.setText(ssid);
                 mAdapter.viewLevel(level);
-                mBinding.cvConnected.setVisibility(View.VISIBLE);
                 mBinding.layoutConnected.tvConnectedStatus.setText(mAdapter.titleWifi);
                 mBinding.layoutConnected.imgWifiIcon.setImageResource(mAdapter.iconWifi);
                 mBinding.layoutConnected.imgWifi6.setVisibility((standard == 6) ? View.VISIBLE : View.GONE);
@@ -218,6 +218,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             String capabilities = network.capabilities;
                             boolean secured = capabilities.contains("WPA") || capabilities.contains("WEP");
                             mBinding.layoutConnected.imgWifiLockConnected.setVisibility(secured ? View.VISIBLE : View.GONE);
+                            break;
                         }
                     }
                 }
